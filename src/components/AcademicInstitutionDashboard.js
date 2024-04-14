@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import Web3 from 'web3';
 
 import UploadFile from './UploadFile';
@@ -16,6 +16,11 @@ const AcademicInstitutionDashboard = () => {
         contract: 'NOT CONNECTED to Smart Contract'
     });
     // const [verifyResult, setVerifyResult] = useState('');
+
+    useEffect(() => {
+        // Function to run after page has loaded
+        connectContract();
+      }, []); 
 
     //For ipfs
     const [hashValue, setHashValue] = useState(null);
@@ -61,8 +66,8 @@ const AcademicInstitutionDashboard = () => {
             <button onClick={connectMetamask}>CONNECT TO METAMASK</button>
             <p id="accountArea">Connection Status: {connectionStatus.metamask}</p>
 
-            <button onClick={connectContract}>CONNECT TO CONTRACT</button>
-            <p id="contractArea">Connection Status: {connectionStatus.contract}</p>
+            {/* <button onClick={connectContract}>CONNECT TO CONTRACT</button>
+            <p id="contractArea">Connection Status: {connectionStatus.contract}</p> */}
 
             <br /><br />
             {/* ipfs */}
@@ -75,11 +80,7 @@ const AcademicInstitutionDashboard = () => {
             <div className="labels">DOCUMENT HASH:</div><input type="text" id="adddochash" value={bytes32hashValue}/><br />
             <button onClick={addDoc}>ADD DOCUMENT</button> <br />
 
-            {/* <br /><br />
-            <div className="labels">USER HASH:</div><input type="text" id="verifyuserhash" /><br />
-            <div className="labels">DOCUMENT HASH:</div><input type="text" id="verifydochash" /> <br />
-            <p id="verifyArea">{verifyResult}</p><br />
-            <button onClick={verifyDoc}>VERIFY DOCUMENT</button> <br /> */}
+            
         </div>
     );
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import Web3 from 'web3';
 import {Address} from '../contractinfo/address';
 import {ABI} from '../contractinfo/abi';
@@ -11,6 +11,11 @@ const CompanyDashboard = () => {
         contract: 'NOT CONNECTED to Smart Contract'
     });
     const [verifyResult, setVerifyResult] = useState('');
+
+    useEffect(() => {
+        // Function to run after page has loaded
+        connectContract();
+      }, []); 
 
     const connectMetamask = async () => {
         if (window.ethereum !== "undefined") {
@@ -32,7 +37,12 @@ const CompanyDashboard = () => {
         const userhash = document.getElementById("verifyuserhash").value;
         const dochash = document.getElementById("verifydochash").value;
         const is_verified = await contract.methods.verifyDocument(userhash, dochash).call();
-        setVerifyResult(`Verified: ${is_verified}`);
+        if (is_verified){
+            setVerifyResult(`Verification SUCCESSFUL`);
+        }else{
+            setVerifyResult(`Verification FAILED`);
+        }
+       
     }
 
     const addDoc = async () => {
@@ -43,16 +53,13 @@ const CompanyDashboard = () => {
 
     return (
         <div>
-            {/* <button onClick={connectMetamask}>CONNECT TO METAMASK</button>
-            <p id="accountArea">Connection Status: {connectionStatus.metamask}</p> */}
 
-            <button onClick={connectContract}>CONNECT TO CONTRACT</button>
-            <p id="contractArea">Connection Status: {connectionStatus.contract}</p>
+
+            {/* <button onClick={connectContract}>CONNECT TO CONTRACT</button>
+            <p id="contractArea">Connection Status: {connectionStatus.contract}</p> */}
 
             <br /><br />
-            {/* <div className="labels">USER HASH:</div><input type="text" id="adduserhash" /><br />
-            <div className="labels">DOCUMENT HASH:</div><input type="text" id="adddochash" /><br />
-            <button onClick={addDoc}>ADD DOCUMENT</button> <br /> */}
+            
 
             <br /><br />
             <div className="labels">USER HASH:</div><input type="text" id="verifyuserhash" /><br />
