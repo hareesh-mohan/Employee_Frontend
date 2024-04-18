@@ -1,48 +1,41 @@
 import React, { useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
+import { useParams } from 'react-router-dom';
+
 function UserDash() {
-  const [name, setName] = useState('');
-  const [age, setAge] = useState('');
-  const [email, setEmail] = useState('');
-  const [userType, setUserType] = useState('');
-  const [password, setPassword] = useState('');
-  const [uniqueId, setUniqueId] = useState('');
-  
-  const handleGenerateUniqueId = () => {
-    // Concatenate username and password to create a unique string
-    const uniqueString = `${email}:${password}`;
-
-    // Generate a UUID based on the unique string
-    const generatedUniqueId = uuidv4(uniqueString);
-
-    // Set the generated unique ID to state
-    setUniqueId(generatedUniqueId);
-  };
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const [documents, setDocuments] = useState([]);
+  const { userEmail } = useParams();
+  const handleViewDocuments = async () => {
+    // Fetch documents from backend
     try {
-      const response = await fetch('http://localhost:3001/signup', {
-        method: 'POST',
+      const response = await fetch(`/documents?email=${userEmail}`, {
+        method: 'GET',
         headers: {
           'Content-Type': 'application/json',
+          // Add any other headers if required, like authorization token
         },
-        body: JSON.stringify({ name, age, email, userType, password,uniqueId }),
       });
-      const data = await response.json();
-      if (response.ok) {
-        alert(data.message)
-      } else {
-        // Handle error
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch documents');
       }
+
+      const data = await response.json();
+      setDocuments(data.documents); // Assuming the response contains an array of document hashes
     } catch (error) {
-      // Handle network error
+      console.error('Error fetching documents:', error.message);
+      // Handle error, show error message, etc.
     }
-  }
+  };
 
   return (
-    <form onSubmit={handleSubmit} className='form-container'>
-      <h1>This is User Dashboard</h1>
-    </form>
+    <div>
+      <button onClick={handleViewDocuments}>View Documents</button>
+      <ul>
+        {documents.map((document, index) => (
+          <li key={index}>{document}</li>
+        ))}
+      </ul>
+    </div>
   );
 }
 

@@ -39,7 +39,7 @@ function CompanyLogin() {
   }
 
   const handleSignupClick = () => {
-    navigate('/companydash'); // Navigate to the signup page using navigate function
+    navigate(`/companydash/${email}`); // Navigate to the signup page using navigate function
   };
 
   return (
