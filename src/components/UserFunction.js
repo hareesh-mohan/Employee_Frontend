@@ -1,16 +1,14 @@
-// UserDashboard.js
+import React, { useState, useEffect } from "react";
 
-import React, { useState, useEffect } from 'react';
-
-const UserDashboard = () => {
+const UserFunction = () => {
   const [userData, setUserData] = useState(null);
 
   useEffect(() => {
     // Fetch user data from API
-    fetch('/api/user')
-      .then(response => response.json())
-      .then(data => setUserData(data))
-      .catch(error => console.error('Error fetching user data:', error));
+    fetch("/api/user")
+      .then((response) => response.json())
+      .then((data) => setUserData(data))
+      .catch((error) => console.error("Error fetching user data:", error));
   }, []);
 
   return (
@@ -27,4 +25,4 @@ const UserDashboard = () => {
   );
 };
 
-export default UserDashboard;
+export default UserFunction;
